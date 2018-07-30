@@ -62,7 +62,7 @@ public class ChatFragment extends BaseFragment {
         dbHelper=new DBHelper(getContext());
         videos =new ArrayList<>();
         searchMedicine=(EditText)view.findViewById(R.id.search_box);
-        recyclerView=(RecyclerView)view.findViewById(R.id.medicines);
+        recyclerView=(RecyclerView)view.findViewById(R.id.videos);
         linearLayoutManager=new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setSmoothScrollbarEnabled(true);

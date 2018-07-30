@@ -55,7 +55,7 @@ public class VideoFragment extends BaseFragment {
         View view= inflater.inflate(R.layout.fragment_video, container, false);
         dbHelper=new DBHelper(getContext());
         videos =new ArrayList<>();
-        recyclerView=(RecyclerView)view.findViewById(R.id.medicines);
+        recyclerView=(RecyclerView)view.findViewById(R.id.videos);
         linearLayoutManager=new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
