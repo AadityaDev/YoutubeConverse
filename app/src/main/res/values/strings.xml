@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Youtube Converse</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="chat_text">Chat</string>
+    <string name="video_text">Video</string>
+    <string name="prompt_video_text">Enter Video Title</string>
+    <string name="prompt_video_to">Select to date</string>
+    <string name="prompt_video_from">Select from date</string>
+    <string-array name="priority_array">
+        <item>Normal</item>
+        <item>Medium</item>
+        <item>High</item>\
+    </string-array>
+</resources>
