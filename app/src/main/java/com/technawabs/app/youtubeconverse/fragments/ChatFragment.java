@@ -59,26 +59,26 @@ public class ChatFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_chat, container, false);
-        dbHelper=new DBHelper(getContext());
-        videos =new ArrayList<>();
-        searchMedicine=(EditText)view.findViewById(R.id.search_box);
-        recyclerView=(RecyclerView)view.findViewById(R.id.videos);
-        linearLayoutManager=new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        videos =new ArrayList<>();
-        videoAdapter =new VideoAdapter(getContext(), videos);
-        getMedicines();
-        recyclerView.setAdapter(videoAdapter);
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
-            }
-        });
-        addTextListener();
+//        dbHelper=new DBHelper(getContext());
+//        videos =new ArrayList<>();
+//        searchMedicine=(EditText)view.findViewById(R.id.search_box);
+//        recyclerView=(RecyclerView)view.findViewById(R.id.videos);
+//        linearLayoutManager=new LinearLayoutManager(getContext());
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        linearLayoutManager.setSmoothScrollbarEnabled(true);
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView.setHasFixedSize(true);
+//        videos =new ArrayList<>();
+//        videoAdapter =new VideoAdapter(getContext(), videos);
+//        getMedicines();
+//        recyclerView.setAdapter(videoAdapter);
+//        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//
+//            }
+//        });
+//        addTextListener();
         return view;
     }
 
@@ -126,28 +126,28 @@ public class ChatFragment extends BaseFragment {
 
             public void onTextChanged(CharSequence query, int start, int before, int count) {
 
-                query = query.toString().toLowerCase();
-                final List<Video> filteredList = new ArrayList<>();
-                for (int i = 0; i < videos.size(); i++) {
-                    final String text = videos.get(i).getName().toLowerCase();
-                    if (text.contains(query)) {
-                        filteredList.add(videos.get(i));
-                    }
-                }
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                if (filteredList.size() > 0) {
-                    videoAdapter = new VideoAdapter(getContext(), filteredList);
-                    recyclerView.setAdapter(videoAdapter);
-                    videoAdapter.notifyDataSetChanged();  // data set changed
-                }
-                searchMedicine.setImeActionLabel(query, KeyEvent.KEYCODE_ENTER);
-                if (videos.size() <= 0) {
-                    videos = new ArrayList<>();
-                    videoAdapter = new VideoAdapter(getContext(), videos);
-                    getMedicines();
-                    recyclerView.setAdapter(videoAdapter);
-                    videoAdapter.notifyDataSetChanged();
-                }
+//                query = query.toString().toLowerCase();
+//                final List<Video> filteredList = new ArrayList<>();
+//                for (int i = 0; i < videos.size(); i++) {
+//                    final String text = videos.get(i).getName().toLowerCase();
+//                    if (text.contains(query)) {
+//                        filteredList.add(videos.get(i));
+//                    }
+//                }
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//                if (filteredList.size() > 0) {
+//                    videoAdapter = new VideoAdapter(getContext(), filteredList);
+//                    recyclerView.setAdapter(videoAdapter);
+//                    videoAdapter.notifyDataSetChanged();  // data set changed
+//                }
+//                searchMedicine.setImeActionLabel(query, KeyEvent.KEYCODE_ENTER);
+//                if (videos.size() <= 0) {
+//                    videos = new ArrayList<>();
+//                    videoAdapter = new VideoAdapter(getContext(), videos);
+//                    getMedicines();
+//                    recyclerView.setAdapter(videoAdapter);
+//                    videoAdapter.notifyDataSetChanged();
+//                }
             }
         });
     }

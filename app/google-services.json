@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "32263638777",
+    "firebase_url": "https://converse-10066.firebaseio.com",
+    "project_id": "youtubeconverse",
+    "storage_bucket": "youtubeconverse.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32263638777:android:02d3999f50d2b4fc",
+        "android_client_info": {
+          "package_name": "com.technawabs.app.youtubeconverse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32263638777-eb8bqn8mbmn73dfehiiad72tsi32f17d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.technawabs.app.youtubeconverse",
+            "certificate_hash": "a08fdbbb2a7b4696745d0cdd568a0cbd0db6c55f"
+          }
+        },
+        {
+          "client_id": "32263638777-4qsppmso86v9m3d7oqg1o9ofgpmlpmtc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvvy9Mf0-5tsWpzsckst7KXGGO8JxBOSg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32263638777-4qsppmso86v9m3d7oqg1o9ofgpmlpmtc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

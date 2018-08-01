@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/YouTubeAndroidPlayerApi/YouTubeAndroidPlayerApi.iml" filepath="$PROJECT_DIR$/YouTubeAndroidPlayerApi/YouTubeAndroidPlayerApi.iml" />
       <module fileurl="file://$PROJECT_DIR$/YoutubeConverse.iml" filepath="$PROJECT_DIR$/YoutubeConverse.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
