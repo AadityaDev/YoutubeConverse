@@ -1,8 +1,12 @@
 package com.technawabs.app.youtubeconverse.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -11,8 +15,19 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.technawabs.app.youtubeconverse.pojo.UserDetails;
 import com.technawabs.app.youtubeconverse.uicomponents.adapter.VideoAdapter;
 import com.technawabs.app.youtubeconverse.R;
 import com.technawabs.app.youtubeconverse.base.BaseFragment;
@@ -21,19 +36,21 @@ import com.technawabs.app.youtubeconverse.models.User;
 import com.technawabs.app.youtubeconverse.preferences.DBHelper;
 import com.technawabs.app.youtubeconverse.uicomponents.ItemClickSupport;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ChatFragment extends BaseFragment {
 
     private OnFragmentInteractionListener mListener;
-    private User user;
-    private DBHelper dbHelper;
-    private VideoAdapter videoAdapter;
-    private List<Video> videos;
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
-    private EditText searchMedicine;
+    private ListView usersList;
+    private TextView noUsersText;
+    private ArrayList<String> al = new ArrayList<>();
+    private int totalUsers = 0;
+    private ProgressDialog pd;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -59,26 +76,39 @@ public class ChatFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_chat, container, false);
-//        dbHelper=new DBHelper(getContext());
-//        videos =new ArrayList<>();
-//        searchMedicine=(EditText)view.findViewById(R.id.search_box);
-//        recyclerView=(RecyclerView)view.findViewById(R.id.videos);
-//        linearLayoutManager=new LinearLayoutManager(getContext());
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        linearLayoutManager.setSmoothScrollbarEnabled(true);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        recyclerView.setHasFixedSize(true);
-//        videos =new ArrayList<>();
-//        videoAdapter =new VideoAdapter(getContext(), videos);
-//        getMedicines();
-//        recyclerView.setAdapter(videoAdapter);
-//        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-//            @Override
-//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-//
-//            }
-//        });
-//        addTextListener();
+        usersList = (ListView)view.findViewById(R.id.usersList);
+        noUsersText = (TextView)view.findViewById(R.id.noUsersText);
+
+        pd = new ProgressDialog(getContext());
+        pd.setMessage("Loading...");
+        pd.show();
+
+        String url = "https://androidchatapp-76776.firebaseio.com/users.json";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String s) {
+                doOnSuccess(s);
+            }
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("" + volleyError);
+            }
+        });
+
+        RequestQueue rQueue = Volley.newRequestQueue(getContext());
+        rQueue.add(request);
+
+        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                UserDetails.chatWith = al.get(position);
+//                startActivity(new Intent(getContext(), Chat.class));
+                Fragment fragment = TextChatFragment.newInstance();
+                replaceFragment(fragment);
+            }
+        });
         return view;
     }
 
@@ -105,51 +135,48 @@ public class ChatFragment extends BaseFragment {
         mListener = null;
     }
 
+    public void doOnSuccess(String s){
+        try {
+            JSONObject obj = new JSONObject(s);
+
+            Iterator i = obj.keys();
+            String key = "";
+
+            while(i.hasNext()){
+                key = i.next().toString();
+
+                if(!key.equals(UserDetails.username)) {
+                    al.add(key);
+                }
+
+                totalUsers++;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(totalUsers <=1){
+            noUsersText.setVisibility(View.VISIBLE);
+            usersList.setVisibility(View.GONE);
+        }
+        else{
+            noUsersText.setVisibility(View.GONE);
+            usersList.setVisibility(View.VISIBLE);
+            usersList.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, al));
+        }
+
+        pd.dismiss();
+    }
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void getMedicines(){
-        videos.addAll(dbHelper.getAllMedicine());
-        videoAdapter.notifyDataSetChanged();
+    public void replaceFragment(Fragment someFragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.frame, someFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
-
-    public void addTextListener() {
-
-        searchMedicine.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence query, int start, int before, int count) {
-
-//                query = query.toString().toLowerCase();
-//                final List<Video> filteredList = new ArrayList<>();
-//                for (int i = 0; i < videos.size(); i++) {
-//                    final String text = videos.get(i).getName().toLowerCase();
-//                    if (text.contains(query)) {
-//                        filteredList.add(videos.get(i));
-//                    }
-//                }
-//                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//                if (filteredList.size() > 0) {
-//                    videoAdapter = new VideoAdapter(getContext(), filteredList);
-//                    recyclerView.setAdapter(videoAdapter);
-//                    videoAdapter.notifyDataSetChanged();  // data set changed
-//                }
-//                searchMedicine.setImeActionLabel(query, KeyEvent.KEYCODE_ENTER);
-//                if (videos.size() <= 0) {
-//                    videos = new ArrayList<>();
-//                    videoAdapter = new VideoAdapter(getContext(), videos);
-//                    getMedicines();
-//                    recyclerView.setAdapter(videoAdapter);
-//                    videoAdapter.notifyDataSetChanged();
-//                }
-            }
-        });
-    }
-
 }

@@ -10,11 +10,13 @@ import com.technawabs.app.youtubeconverse.R;
 import com.technawabs.app.youtubeconverse.base.BaseAppCompat;
 import com.technawabs.app.youtubeconverse.fragments.ChatFragment;
 import com.technawabs.app.youtubeconverse.fragments.HomeFragment;
+import com.technawabs.app.youtubeconverse.fragments.TextChatFragment;
 import com.technawabs.app.youtubeconverse.fragments.VideoFragment;
 
 public class MainActivity extends BaseAppCompat implements HomeFragment.OnFragmentInteractionListener,
         ChatFragment.OnFragmentInteractionListener,
-        VideoFragment.OnFragmentInteractionListener{
+        VideoFragment.OnFragmentInteractionListener,
+        TextChatFragment.OnFragmentInteractionListener{
 
     private Fragment fragment;
     private FragmentManager fragmentManager;

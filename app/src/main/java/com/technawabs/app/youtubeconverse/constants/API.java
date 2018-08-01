@@ -8,7 +8,8 @@ public enum API implements Serializable{
     HOME(""),
     USERS("https://converse-10066.firebaseio.com/users"),
     FIREBASE_USER("https://converse-10066.firebaseio.com/users.json"),
-    FIREBASE_CHAT("https://converse-10066.firebaseio.com");
+    FIREBASE_CHAT("https://converse-10066.firebaseio.com"),
+    FIREBASE_MESSAGES("https://converse-10066.firebaseio.com/messages/");
 
     private String url;
 

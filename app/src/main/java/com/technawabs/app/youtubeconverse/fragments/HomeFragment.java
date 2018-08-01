@@ -91,7 +91,7 @@ public class HomeFragment extends BaseFragment {
         tabWidget.setDividerInvisible();
 
         tabWidget.addTab(LayoutInflater.from(getContext()).inflate(R.layout.bottom_bar_videos, null));
-        tabWidget.addTab(LayoutInflater.from(getContext()).inflate(R.layout.bottom_bar_job, null));
+        tabWidget.addTab(LayoutInflater.from(getContext()).inflate(R.layout.bottom_bar_chat, null));
 
         viewPager = (ViewPager) itemView.findViewById(R.id.main_viewPager);
         homePagerAdapter = new HomePagerAdapter(getChildFragmentManager());
