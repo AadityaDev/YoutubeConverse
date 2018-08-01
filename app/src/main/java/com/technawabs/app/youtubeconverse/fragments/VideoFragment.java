@@ -3,12 +3,20 @@ package com.technawabs.app.youtubeconverse.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.technawabs.app.youtubeconverse.constants.Config;
 import com.technawabs.app.youtubeconverse.uicomponents.adapter.VideoAdapter;
 import com.technawabs.app.youtubeconverse.R;
 import com.technawabs.app.youtubeconverse.base.BaseFragment;
@@ -20,8 +28,13 @@ import com.technawabs.app.youtubeconverse.uicomponents.ItemClickSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoFragment extends BaseFragment {
+public class VideoFragment extends Fragment {
 
+    private FragmentActivity myContext;
+    private YouTubePlayer YPlayer;
+    private static final String YoutubeDeveloperKey = "AIzaSyCvvy9Mf0-5tsWpzsckst7KXGGO8JxBOSg";
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
+    private FirebaseAnalytics mFirebaseAnalytics;
     private User user;
     private OnFragmentInteractionListener mListener;
     private DBHelper dbHelper;
@@ -36,16 +49,13 @@ public class VideoFragment extends BaseFragment {
 
     public static VideoFragment newInstance() {
         VideoFragment fragment = new VideoFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
 
     @Override
@@ -53,21 +63,30 @@ public class VideoFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_video, container, false);
-        dbHelper=new DBHelper(getContext());
-        videos =new ArrayList<>();
-        recyclerView=(RecyclerView)view.findViewById(R.id.videos);
-        linearLayoutManager=new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        videos =new ArrayList<>();
-        videoAdapter =new VideoAdapter(getContext(), videos);
-        getMedicines();
-        recyclerView.setAdapter(videoAdapter);
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+        YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.youtube_fragment, youTubePlayerFragment).commit();
+
+        youTubePlayerFragment.initialize(Config.DEVELOPER_KEY, new YouTubePlayer.OnInitializedListener() {
+
             @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+            public void onInitializationSuccess(YouTubePlayer.Provider arg0, YouTubePlayer youTubePlayer, boolean b) {
+                if (!b) {
+                    YPlayer = youTubePlayer;
+                    YPlayer.setFullscreen(false);
+                    YPlayer.loadVideo( Config.YOUTUBE_VIDEO_CODE);
+                    YPlayer.play();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, Config.YOUTUBE_VIDEO_CODE);
+                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "video");
+                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider arg0, YouTubeInitializationResult arg1) {
+                // TODO Auto-generated method stub
 
             }
         });
@@ -101,8 +120,4 @@ public class VideoFragment extends BaseFragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void getMedicines(){
-        videos.addAll(dbHelper.getMedicinesForToday());
-        videoAdapter.notifyDataSetChanged();
-    }
 }

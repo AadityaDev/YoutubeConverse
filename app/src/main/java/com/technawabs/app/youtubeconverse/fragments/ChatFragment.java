@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.technawabs.app.youtubeconverse.constants.API;
 import com.technawabs.app.youtubeconverse.pojo.UserDetails;
 import com.technawabs.app.youtubeconverse.uicomponents.adapter.VideoAdapter;
 import com.technawabs.app.youtubeconverse.R;
@@ -83,7 +84,7 @@ public class ChatFragment extends BaseFragment {
         pd.setMessage("Loading...");
         pd.show();
 
-        String url = "https://androidchatapp-76776.firebaseio.com/users.json";
+        String url = API.FIREBASE_USER.getURL();
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
@@ -103,8 +104,6 @@ public class ChatFragment extends BaseFragment {
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                UserDetails.chatWith = al.get(position);
-//                startActivity(new Intent(getContext(), Chat.class));
                 Fragment fragment = TextChatFragment.newInstance();
                 replaceFragment(fragment);
             }

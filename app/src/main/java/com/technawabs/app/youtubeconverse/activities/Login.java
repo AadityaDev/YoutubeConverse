@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.technawabs.app.youtubeconverse.R;
 import com.technawabs.app.youtubeconverse.constants.API;
 import com.technawabs.app.youtubeconverse.pojo.UserDetails;
@@ -24,16 +25,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
-    TextView registerUser;
-    EditText username, password;
-    Button loginButton;
-    String user, pass;
+
+    private TextView registerUser;
+    private EditText username, password;
+    private Button loginButton;
+    private String user, pass;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         registerUser = (TextView)findViewById(R.id.register);
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
@@ -81,6 +85,7 @@ public class Login extends AppCompatActivity {
                                     else if(obj.getJSONObject(user).getString("password").equals(pass)){
                                         UserDetails.username = user;
                                         UserDetails.password = pass;
+                                        mFirebaseAnalytics.setUserProperty("username", user);
                                         startActivity(new Intent(Login.this, MainActivity.class));
                                     }
                                     else {
