@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.firebase.client.Firebase;
 import com.technawabs.app.youtubeconverse.R;
+import com.technawabs.app.youtubeconverse.constants.API;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,12 +74,12 @@ public class Register extends AppCompatActivity {
                                 pd.setMessage("Loading...");
                                 pd.show();
 
-                                String url = "https://androidchatapp-76776.firebaseio.com/users.json";
+                                String url = API.FIREBASE_USER.getURL();
 
                                 StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
                                     @Override
                                     public void onResponse(String s) {
-                                        Firebase reference = new Firebase("https://androidchatapp-76776.firebaseio.com/users");
+                                        Firebase reference = new Firebase(API.USERS.getURL());
 
                                         if(s.equals("null")) {
                                             reference.child(user).child("password").setValue(pass);

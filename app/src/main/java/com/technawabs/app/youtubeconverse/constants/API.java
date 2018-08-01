@@ -5,7 +5,10 @@ import java.io.Serializable;
 public enum API implements Serializable{
 
     BASE(""),
-    HOME("");
+    HOME(""),
+    USERS("https://converse-10066.firebaseio.com/users"),
+    FIREBASE_USER("https://converse-10066.firebaseio.com/users.json"),
+    FIREBASE_CHAT("https://converse-10066.firebaseio.com");
 
     private String url;
 
@@ -14,7 +17,7 @@ public enum API implements Serializable{
     }
 
     public String getURL(){
-        return BASE.getURL()+url;
+        return url;
     }
 
 }

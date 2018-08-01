@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.technawabs.app.youtubeconverse.R;
+import com.technawabs.app.youtubeconverse.constants.API;
 import com.technawabs.app.youtubeconverse.pojo.UserDetails;
 
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class Login extends AppCompatActivity {
                     password.setError("can't be blank");
                 }
                 else{
-                    String url = "https://androidchatapp-76776.firebaseio.com/users.json";
+                    String url = API.FIREBASE_USER.getURL();
                     final ProgressDialog pd = new ProgressDialog(Login.this);
                     pd.setMessage("Loading...");
                     pd.show();
